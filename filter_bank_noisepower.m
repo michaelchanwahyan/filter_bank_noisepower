@@ -193,13 +193,13 @@ src_str = src_str + sprintf('    const size_t W = %d; // filter window width', N
 src_str = src_str + '    double __filSigPow_accu__ = 0.0; // filtered signal power, for accumulation'; src_str = src_str + newline;
 src_str = src_str + '    double __filSigAmplt_instant__; // filter signal instantaneous amplitude (can be +ve or -ve)'; src_str = src_str + newline;
 src_str = src_str + '    for (size_t s = 0; s < W; ++s) { // s being convolution shift'; src_str = src_str + newline;
-src_str = src_str + '        __signalStrength_instantaneous__ = 0.0;'; src_str = src_str + newline;
+src_str = src_str + '        __filSigAmplt_instant__ = 0.0;'; src_str = src_str + newline;
 src_str = src_str + '        for (size_t w = 0; w < W; ++w) {'; src_str = src_str + newline;
-src_str = src_str + '            __signalStrength_instantaneous__ += signal[(w+s)%W] * filter[W-w-1];'; src_str = src_str + newline;
+src_str = src_str + '            __filSigAmplt_instant__ += sig[(w+s)%W] * fil[W-w-1];'; src_str = src_str + newline;
 src_str = src_str + '        }'; src_str = src_str + newline;
-src_str = src_str + '        __signalPower_accumulated__ += power(__signalStrength_instantaneous__, 2);'; src_str = src_str + newline;
+src_str = src_str + '        __filSigPow_accu__ += __filSigAmplt_instant__ * __filSigAmplt_instant__;'; src_str = src_str + newline;
 src_str = src_str + '    }'; src_str = src_str + newline;
-src_str = src_str + '    return __signalPower_accumulated__;'; src_str = src_str + newline;
+src_str = src_str + '    return __filSigPow_accu__;'; src_str = src_str + newline;
 src_str = src_str + '}'; src_str = src_str + newline;
  
 fid = fopen('filter_filterbank.cpp', 'wt');
